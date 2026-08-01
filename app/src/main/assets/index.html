@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="جدول ورديات شركة إسكندرية لتداول الحاويات والبضائع - تطبيق ويب تقدمي لجدول الورديات الشهرية">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="جدول الورادي">
+<meta name="theme-color" content="#0f1923">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="logo.png">
+<title>جدول الورادي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--red:#e53935;--yellow:#f9a825;--blue:#1e88e5;--bg:#0f1923;--surface:#1a2535;--surface2:#243044;--text:#e8eaf0;--text2:#8fa3b8;--border:#2d3f55;--morning:#ff9800;--night:#7986cb;--off:#66bb6a}
+html,body{height:100%;font-family:'Cairo','Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);overscroll-behavior:none;-webkit-font-smoothing:antialiased;width:100%;overflow-x:hidden}
+body{padding:16px 12px 32px;background-image:radial-gradient(ellipse at 15% 15%,rgba(30,136,229,.07) 0%,transparent 50%),radial-gradient(ellipse at 85% 80%,rgba(229,57,53,.07) 0%,transparent 50%);display:flex;flex-direction:column;min-height:100vh}
+.main-content{flex:1;display:flex;flex-direction:column;width:100%;max-width:500px;margin:0 auto}
+.header{text-align:center;margin-bottom:15px;flex-shrink:0}
+h1{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#e53935,#f9a825,#1e88e5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+.subtitle{color:var(--text2);font-size:.7rem;margin-top:2px}
+.logo-wrap{width:160px;margin:0 auto 8px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.4);overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,.1)}
+.logo-wrap img{width:100%;display:block;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;transform:scale(1.01)}
+.controls{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.row{display:flex;gap:10px;align-items:flex-end;justify-content:center;flex-wrap:nowrap}
+.cg{display:flex;flex-direction:column;gap:4px;flex:1}
+.cg label{font-size:.65rem;color:var(--text2);font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.team-selector{display:flex;gap:8px;justify-content:center}
+.team-btn{width:50px;height:50px;border-radius:50%;border:3px solid transparent;cursor:pointer;font-family:inherit;font-weight:900;font-size:.65rem;color:#fff;transition:transform .15s,border-color .15s,box-shadow .15s;text-shadow:0 1px 2px rgba(0,0,0,.5);-webkit-appearance:none;background:var(--red);will-change:transform;flex-shrink:0}
+.team-btn.yellow{background:var(--yellow);color:#222;text-shadow:none}
+.team-btn.blue{background:var(--blue)}
+.team-btn.active{border-color:#fff;transform:scale(1.1);box-shadow:0 0 15px rgba(255,255,255,.2)}
+.team-btn:active{transform:scale(.95)!important}
+select,input[type=number]{background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:.85rem;padding:8px 10px;outline:0;-webkit-appearance:none;appearance:none;width:100%}
+.team-label{text-align:center;font-size:.65rem;color:var(--text2);font-weight:700;letter-spacing:.8px;margin-bottom:6px}
+.btn{background:linear-gradient(135deg,var(--blue),#1565c0);border:none;border-radius:12px;color:#fff;font-family:inherit;font-size:.9rem;font-weight:700;padding:10px 20px;cursor:pointer;transition:transform .1s,opacity .1s;width:100%;will-change:transform}
+.btn:active{transform:scale(.97);opacity:.9}
+.today-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 12px;margin-bottom:12px;text-align:center;display:none;opacity:0;transition:opacity .2s;flex-shrink:0}
+.today-card.visible{display:block;opacity:1}
+.today-label{font-size:.7rem;color:var(--text2);font-weight:600;margin-bottom:3px}
+.today-date{font-size:.9rem;font-weight:700;margin-bottom:8px}
+.shift-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:40px;font-size:1.1rem;font-weight:900}
+.shift-badge.morning{background:rgba(255,152,0,.13);border:2px solid var(--morning);color:var(--morning)}
+.shift-badge.night{background:rgba(121,134,203,.15);border:2px solid var(--night);color:var(--night)}
+.shift-badge.off{background:rgba(102,187,106,.12);border:2px solid var(--off);color:var(--off)}
+.legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;flex-shrink:0}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--text2)}
+.ldot{width:8px;height:8px;border-radius:50%;background:var(--morning)}
+.ldot.n{background:var(--night)}
+.ldot.o{background:var(--off)}
+.cal-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:none;margin-bottom:15px;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s;flex:1;min-height:200px}
+.cal-wrap.visible{display:flex;flex-direction:column;opacity:1;transform:translateY(0)}
+.cal-head{background:var(--surface2);padding:10px;font-size:.9rem;font-weight:700;text-align:center;border-bottom:1px solid var(--border);flex-shrink:0}
+.table-scroll{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse}
+th{background:var(--surface2);padding:7px 4px;font-size:.65rem;font-weight:700;color:var(--text2);border-bottom:1px solid var(--border);text-align:center;position:sticky;top:0;z-index:2}
+td{padding:6px 4px;text-align:center;border-bottom:1px solid rgba(45,63,85,.4);font-size:.75rem;font-weight:600}
+tr:last-child td{border-bottom:none}
+td.dn{color:var(--text2);font-size:.7rem}
+td.dc{font-size:.7rem}
+.cm{background:rgba(255,152,0,.12);color:var(--morning);border-radius:6px;padding:3px 6px;display:inline-block;font-size:.7rem;white-space:nowrap}
+.cn{background:rgba(121,134,203,.14);color:var(--night);border-radius:6px;padding:3px 6px;display:inline-block;font-size:.7rem;white-space:nowrap}
+.co{background:rgba(102,187,106,.1);color:var(--off);border-radius:6px;padding:3px 6px;display:inline-block;font-size:.7rem;white-space:nowrap}
+tr.today-r td{background:rgba(30,136,229,.09)!important}
+tr.today-r td.dc{color:#64b5f6;font-weight:900}
+.footer{text-align:center;margin-top:auto;padding:15px 12px;border-top:1px solid var(--border);background:var(--surface);border-radius:16px;color:var(--text2);font-size:.7rem;flex-shrink:0}
+.footer strong{color:var(--text)}
+.footer-title{font-size:.75rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.footer-subtitle{font-size:.65rem;color:var(--text2);margin-bottom:8px;letter-spacing:.5px}
+.footer-divider{width:30px;height:1px;background:var(--border);margin:0 auto 8px}
+
+/* Popup Style */
+#privacyPopup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.popup-content{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:28px;max-width:420px;width:100%;box-shadow:0 15px 40px rgba(0,0,0,0.6);text-align:right;animation:popIn 0.3s ease-out}
+@keyframes popIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+</style>
+</head>
+<body>
+<div class="main-content">
+  <div class="header">
+  <div class="logo-wrap">
+    <img id="companyLogo" src="logo.png" alt="شعار الشركة" loading="eager">
+  </div>
+  <h1>🏭 جدول الورادي</h1>
+  <p class="subtitle">شركة إسكندرية لتداول الحاويات والبضائع<br>ورديات ١٢ ساعة — ٨ص:٨م | ٨م:٨ص</p>
+</div>
+<div class="controls">
+  <div>
+    <div class="team-label">اختر الوردية</div>
+    <div class="team-selector">
+      <button class="team-btn red active" data-team="red">حمراء</button>
+      <button class="team-btn yellow" data-team="yellow">صفراء</button>
+      <button class="team-btn blue" data-team="blue">زرقاء</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cg">
+      <label>السنة</label>
+      <input type="number" id="yr" value="2026" min="2020" max="2040">
+    </div>
+    <div class="cg">
+      <label>الشهر</label>
+      <select id="mo">
+        <option value="1">يناير</option>
+        <option value="2">فبراير</option>
+        <option value="3" selected>مارس</option>
+        <option value="4">أبريل</option>
+        <option value="5">مايو</option>
+        <option value="6">يونيو</option>
+        <option value="7">يوليو</option>
+        <option value="8">أغسطس</option>
+        <option value="9">سبتمبر</option>
+        <option value="10">أكتوبر</option>
+        <option value="11">نوفمبر</option>
+        <option value="12">ديسمبر</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn" id="generateBtn">عرض الجدول</button>
+</div>
+<div class="today-card" id="todayCard">
+  <div class="today-label">وردية اليوم</div>
+  <div class="today-date" id="todayDate"></div>
+  <div id="todayBadge"></div>
+</div>
+<div class="legend">
+  <div class="legend-item"><div class="ldot"></div>صباحية ٨ص–٨م</div>
+  <div class="legend-item"><div class="ldot n"></div>ليلية ٨م–٨ص</div>
+  <div class="legend-item"><div class="ldot o"></div>راحة</div>
+</div>
+<div class="cal-wrap" id="calWrap">
+  <div class="cal-head" id="calHead"></div>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>التاريخ</th>
+          <th>صباحية</th>
+          <th>راحة</th>
+          <th>ليلية</th>
+        </tr>
+      </thead>
+      <tbody id="calBody"></tbody>
+    </table>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-title">شركة إسكندرية لتداول الحاويات والبضائع</div>
+  <div class="footer-subtitle">Alexandria Container & Cargo Handling Co.</div>
+  <div class="footer-divider"></div>
+  <div style="margin-bottom:8px"><a href="javascript:void(0)" id="privacyLink" style="color:var(--text2);text-decoration:underline;font-size:0.7rem;">سياسة الخصوصية</a></div>
+  <div>© <span id="footerDate"></span> &nbsp;·&nbsp; جميع الحقوق محفوظة لـ <strong>Ahmed Morgan</strong></div>
+</div>
+
+<!-- Privacy Policy Popup -->
+<div id="privacyPopup">
+  <div class="popup-content">
+    <h2 style="color:var(--blue);font-size:1.3rem;margin-bottom:15px;border-bottom:1px solid var(--border);padding-bottom:10px;">🛡️ سياسة الخصوصية</h2>
+    <div style="font-size:0.85rem;line-height:1.6;color:var(--text);margin-bottom:25px;">
+      نحن نحترم خصوصيتك بالكامل. تطبيق <strong>"جدول الورادي"</strong> مصمم لتقديم المعلومات فقط:
+      <ul style="margin-top:10px;padding-right:20px;list-style-type:circle;">
+        <li>لا يتم جمع أو تخزين أي بيانات شخصية للمستخدمين.</li>
+        <li>لا يتطلب التطبيق أي أذونات وصول حساسة (كاميرا، موقع، الخ).</li>
+        <li>التطبيق يعمل محلياً لعرض الجداول ولا يشارك أي معلومات مع أي طرف ثالث.</li>
+      </ul>
+    </div>
+    <button class="btn" id="closePrivacy" style="padding:10px;">موافق، فهمت</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const CYCLE=['M','M','M','O','N','N','N','O','O'];
+const OFFSETS={red:5,yellow:8,blue:2};
+const REF=new Date(2026,2,1).getTime();
+const DAYS_AR=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const MONTHS_AR=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const SHIFT_INFO={M:{cls:'morning',icon:'☀️',lbl:'صباحية  ٨ص – ٨م'},N:{cls:'night',icon:'🌙',lbl:'ليلية  ٨م – ٨ص'},O:{cls:'off',icon:'🟢',lbl:'يوم راحة'}};
+const cmTpl='<span class="cm">☀️ ٨ص–٨م</span>';
+const cnTpl='<span class="cn">🌙 ٨م–٨ص</span>';
+const coTpl='<span class="co">🟢 راحة</span>';
+let team='red',isVisible=false;
+const el={yr:$('yr'),mo:$('mo'),todayCard:$('todayCard'),todayDate:$('todayDate'),todayBadge:$('todayBadge'),calWrap:$('calWrap'),calHead:$('calHead'),calBody:$('calBody'),footerDate:$('footerDate'),teamBtns:document.querySelectorAll('.team-btn'),generateBtn:$('generateBtn'),privacyLink:$('privacyLink'),privacyPopup:$('privacyPopup'),closePrivacy:$('closePrivacy')};
+function $(id){return document.getElementById(id)}
+function getShift(t,ts){
+  const diff=Math.round((ts-REF)/86400000);
+  return CYCLE[((diff+OFFSETS[t])%9+9)%9];
+}
+function isToday(y,m,d){
+  const n=new Date();
+  return y===n.getFullYear()&&m===n.getMonth()&&d===n.getDate();
+}
+function selectTeam(t){
+  team=t;
+  el.teamBtns.forEach(b=>b.classList.remove('active'));
+  document.querySelector('.team-btn.'+t).classList.add('active');
+  if(isVisible)generate();
+}
+function showToday(){
+  const now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate();
+  el.todayDate.textContent=DAYS_AR[now.getDay()]+'، '+d+' '+MONTHS_AR[m]+' '+y;
+  const s=getShift(team,new Date(y,m,d).getTime());
+  const info=SHIFT_INFO[s];
+  el.todayBadge.innerHTML='<span class="shift-badge '+info.cls+'">'+info.icon+' '+info.lbl+'</span>';
+  el.todayCard.classList.add('visible');
+}
+function scrollToToday(){
+  const todayRow=el.calBody.querySelector('.today-r');
+  if(todayRow){
+    setTimeout(()=>{
+      todayRow.scrollIntoView({behavior:'smooth',block:'center'});
+    },100);
+  }
+}
+function generate(){
+  showToday();
+  const y=+el.yr.value;
+  const mo=+el.mo.value-1;
+  el.calHead.textContent=MONTHS_AR[mo]+' '+y;
+  const ts=new Date(y,mo,1).getTime();
+  const days=new Date(y,mo+1,0).getDate();
+  const frag=document.createDocumentFragment();
+  for(let d=1;d<=days;d++){
+    const dateTs=new Date(y,mo,d).getTime();
+    const s=getShift(team,dateTs);
+    const tr=document.createElement('tr');
+    if(isToday(y,mo,d))tr.className='today-r';
+    tr.innerHTML='<td class="dn">'+DAYS_AR[new Date(y,mo,d).getDay()]+'</td><td class="dc">'+(d<10?'0':'')+d+'-'+(mo+1<10?'0':'')+(mo+1)+'-'+y+'</td><td>'+(s==='M'?cmTpl:'')+'</td><td>'+(s==='O'?coTpl:'')+'</td><td>'+(s==='N'?cnTpl:'')+'</td>';
+    frag.appendChild(tr);
+  }
+  el.calBody.innerHTML='';
+  el.calBody.appendChild(frag);
+  el.calWrap.classList.add('visible');
+  isVisible=true;
+  scrollToToday();
+}
+function init(){
+  const now=new Date();
+  el.yr.value=now.getFullYear();
+  el.mo.value=now.getMonth()+1;
+  el.footerDate.textContent=now.getFullYear();
+  el.teamBtns.forEach(btn=>btn.addEventListener('click',()=>selectTeam(btn.dataset.team),{passive:true}));
+  el.generateBtn.addEventListener('click',generate,{passive:true});
+
+  // Privacy Popup Logic
+  el.privacyLink.addEventListener('click',()=>el.privacyPopup.style.display='flex');
+  el.closePrivacy.addEventListener('click',()=>el.privacyPopup.style.display='none');
+  el.privacyPopup.addEventListener('click',(e)=>{if(e.target===el.privacyPopup)el.privacyPopup.style.display='none'});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+else init();
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+}
+})();
+</script>
+</div>
+</body>
+</html>

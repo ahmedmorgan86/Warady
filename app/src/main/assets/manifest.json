@@ -1,0 +1,46 @@
+{
+  "id": "waradi-alex-container-v1",
+  "name": "جدول الورادي - إسكندرية للحاويات",
+  "short_name": "جدول الورادي",
+  "description": "جدول ورديات شركة إسكندرية لتداول الحاويات والبضائع",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "background_color": "#0f1923",
+  "theme_color": "#0f1923",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["productivity", "utilities", "business"],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "android_package_name": "com.alexcontainer.waradi",
+  "android_min_sdk_version": 21,
+  "shortcuts": [
+    {
+      "name": "الوردية الحمراء",
+      "short_name": "حمراء",
+      "description": "عرض جدول الوردية الحمراء",
+      "url": ".",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "الوردية الصفراء",
+      "short_name": "صفراء",
+      "description": "عرض جدول الوردية الصفراء",
+      "url": ".",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "الوردية الزرقاء",
+      "short_name": "زرقاء",
+      "description": "عرض جدول الوردية الزرقاء",
+      "url": ".",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    }
+  ],
+  "icons": [
+    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
